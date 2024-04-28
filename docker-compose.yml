@@ -1,0 +1,32 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    networks:
+      - mynetwork
+    depends_on:
+      - app1
+      - app2
+
+
+  app1:
+    container_name: app1
+    build: ./node1
+    ports:
+    - "3000:3000"
+    networks:
+      - mynetwork
+
+  app2:
+    container_name: app2
+    build: ./node2
+    ports:
+    - "3001:3001"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

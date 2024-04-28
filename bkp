@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app1:
+    build: ./node1
+    ports:
+    - "3000:3000"
+    networks:
+      - mynetwork
+  app2:
+    build: ./node2
+    ports:
+    - "3001:3001"
+    networks:
+      - mynetwork
+    depends_on:
+      - app1
+
+networks:
+  mynetwork:
+    driver: bridge
