@@ -5,10 +5,11 @@ services:
     ports:
       - "8080:80"
     networks:
-      - mynetwork
+      - node_app
     depends_on:
       - app1
       - app2
+      - app3
 
 
   app1:
@@ -17,7 +18,7 @@ services:
     ports:
     - "3000:3000"
     networks:
-      - mynetwork
+      - node_app
 
   app2:
     container_name: app2
@@ -25,8 +26,16 @@ services:
     ports:
     - "3001:3001"
     networks:
-      - mynetwork
+      - node_app
+
+  app3:
+    container_name: app3
+    build: ./node3
+    ports:
+    - "3002:3002"
+    networks:
+      - node_app
 
 networks:
-  mynetwork:
+  node_app:
     driver: bridge
