@@ -28,7 +28,7 @@ jobs:
 
       - name: Iterate over Node.js apps and build Docker images
         run: |
-         for app in nodeapp1 nodeapp2 nodeapp3; do
+         for app in node1 node2 node3; do
            if [ -f ./$app/Dockerfile ]; then
              docker build -t sainiji/$app:latest ./$app
              docker push sainiji/$app:latest
