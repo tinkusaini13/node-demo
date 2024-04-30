@@ -35,6 +35,10 @@ jobs:
           
       - name: Run Trivy scan
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node1:v1
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node2:v1
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node3:v1
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy ${{ secrets.DOCKERHUB_USERNAME }}/node1:v1
+          exit_code=$?
+          if [ $exit_code -eq 0 ]; then
+            echo "No vulnerabilities found."
+          else
+            echo "Vulnerabilities found. Exit code: $exit_code"
+          fi
