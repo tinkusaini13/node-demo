@@ -22,17 +22,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Present working Path
-        run: |
-          pwd && ls -ltr 
-
       - name: Iterate over Node.js apps and build Docker images
         run: |
          for app in node1 node2 node3; do
            if [ -f ./$app/Dockerfile ]; then
-             docker build -t sainiji/$app:latest ./$app
-             docker push sainiji/$app:latest
+             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$app:latest ./$app
+             docker push ${{ secrets.DOCKERHUB_USERNAME }}/$app:latest
            else
              echo "Dockerfile not found in ./$app directory. Skipping..."
            fi
          done
+         
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.20.0/trivy_0.20.0_Linux-64bit.tar.gz
+          tar zxvf trivy_0.20.0_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
+          
+      - name: Run Trivy scan
+        run: |
+          trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node1:v1
+          trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node2:v1
+          trivy --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/node3:v1
