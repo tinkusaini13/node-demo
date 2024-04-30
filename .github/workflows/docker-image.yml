@@ -26,8 +26,8 @@ jobs:
         run: |
          for app in node1 node2 node3; do
            if [ -f ./$app/Dockerfile ]; then
-             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$app:latest ./$app
-             docker push ${{ secrets.DOCKERHUB_USERNAME }}/$app:latest
+             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$app:v1 ./$app
+             docker push ${{ secrets.DOCKERHUB_USERNAME }}/$app:v1
            else
              echo "Dockerfile not found in ./$app directory. Skipping..."
            fi
