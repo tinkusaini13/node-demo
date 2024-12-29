@@ -11,7 +11,6 @@ services:
       - app2
       - app3
 
-
   app1:
     container_name: app1
     build: ./node1
