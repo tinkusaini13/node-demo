@@ -1,31 +1,25 @@
-name: Deploy to AWS EC2 with Docker Compose (Password Authentication)
+name: Clone Repo 
 
 on:
   push:
     branches:
-      - main  # Trigger this workflow on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on PR to the main branch
+      - main  # Trigger on push to the main branch
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest  # Use a runner on GitHub-hosted Ubuntu
+  clone-repo:
+    runs-on: ubuntu-latest  
 
     steps:
-    # Step 1: Checkout code from the repo
+   
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 2: Set up SSH and run commands on EC2
-    - name: SSH into EC2 and deploy
-      uses: appleboy/ssh-action@v0.1.8
-      with:
-        host: ${{ secrets.EC2_HOST }}  # The public IP or DNS of your EC2 instance
-        username: vikas              # Your EC2 instance username (e.g., ec2-user, ubuntu, etc.)
-        password: ${{ secrets.EC2_SSH_PASSWORD }}  # Password for your EC2 user
-        port: 22                       # The port for SSH (default is 22)
-        script: |
-          git pull origin main  # Pull the latest changes (optional)
-          docker-compose down  # Stop any existing containers
-          docker-compose up -d  # Start the containers in detached mode
+   
+    - name: SSH into EC2 and clone the repository
+      run: |
+        
+        sudo apt-get install sshpass
+        sshpass -p "${{ secrets.EC2_SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/${{ secrets.EC2_USER }}
+          git clone https://github.com/tinkusaini13/node-demo.git 
+        EOF
