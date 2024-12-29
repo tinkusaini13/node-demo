@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - node  # Trigger on push to the main branch
-
 jobs:
   clone-repo:
     runs-on: ubuntu-latest  
