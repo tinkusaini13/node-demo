@@ -3,7 +3,7 @@ name: Clone Repo
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - node  # Trigger on push to the main branch
 
 jobs:
   clone-repo:
