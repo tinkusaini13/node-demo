@@ -26,7 +26,6 @@ jobs:
         password: ${{ secrets.EC2_SSH_PASSWORD }}  # Password for your EC2 user
         port: 22                       # The port for SSH (default is 22)
         script: |
-          cd /path/to/your/app/directory  # Update to the path where your app is located
           git pull origin main  # Pull the latest changes (optional)
           docker-compose down  # Stop any existing containers
           docker-compose up -d  # Start the containers in detached mode
